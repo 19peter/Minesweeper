@@ -96,5 +96,10 @@ body{
 
     .grid {
         margin-top: 5px;
+        width: 385px;
+    }
+    
+    .cell {
+        width: 40.7px;
     }
 }
