@@ -1,0 +1,100 @@
+@import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
+
+
+* {
+    padding: 0;
+    margin: 0;
+}
+
+h1 {
+    font-family: 'Permanent Marker', cursive;
+    font-size: 50px;
+    color: white;
+}
+
+body{
+    
+    display: flex;
+    justify-content: center;
+    background: rgb(27,19,112);
+    background: linear-gradient(293deg, rgba(27,19,112,1) 14%, rgba(0,0,19,1) 95%); 
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.flag {
+    display: none;
+}
+
+.grid {
+    width: 405px;
+    height: 405px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    background-color: #7a63fcfa;
+    backdrop-filter: blur(12px);
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 70px;
+    
+}
+
+.cell {
+    width: 43px;
+    height: 43px;
+    border: 1px solid rgb(162, 172, 224);
+    background: rgb(17,0,203);
+    background: linear-gradient(293deg, rgba(17,0,203,1) 14%, rgba(0,2,148,1) 95%);   
+    text-align: center;
+    color: white;
+    line-height: 40px;
+    cursor: auto;
+}
+
+.cell-clicked {
+    background: rgb(5,0,66);
+    background: linear-gradient(293deg, rgba(5,0,66,1) 91%, rgba(9,9,61,1) 95%);
+    color: white;
+    /* text-indent: -9999px;  */
+}
+
+.cell-mine {
+    width: 43px;
+    height: 43px;
+    border: 1px solid rgb(162, 172, 224);
+    background-color: red;
+    text-align: center;
+    color: white;
+    line-height: 40px;
+}
+
+.check-btn {
+    width: 300px;
+    height: 30px;
+    margin-top: 20px;
+    background: linear-gradient(293deg, rgba(17,0,203,1) 14%, rgba(0,2,148,1) 95%);
+    border: 1px solid rgb(162, 172, 224);
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+@media (max-width: 1000px) {
+    .flag {
+        display: block;
+        width: 30px;
+        height: 30px;
+        position: relative;
+        left: 92%;
+        top: 0.5%;
+    }
+
+    .grid {
+        margin-top: 5px;
+    }
+}
