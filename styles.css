@@ -100,7 +100,7 @@ body{
         width: 385px;
     }
     
-    .cell {
+    .cell, .cell-mine {
         width: 40.7px;
     }
 }
