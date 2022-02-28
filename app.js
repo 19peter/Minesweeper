@@ -213,7 +213,8 @@ document.addEventListener("DOMContentLoaded", function () {
             })
         } else {
             flagBtn.addEventListener("click", () => {
-                flag = true;
+                !flag ? flag = true : flag = false;
+                flag ? flagBtn.style.backgroundColor = "red" : flagBtn.style.backgroundColor = "white";
             })
 
             cell.addEventListener("click", () => {
