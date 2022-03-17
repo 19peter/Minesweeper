@@ -16,6 +16,7 @@ body{
     
     display: flex;
     justify-content: center;
+    align-items: center;
     background: rgb(27,19,112);
     background: linear-gradient(293deg, rgba(27,19,112,1) 14%, rgba(0,0,19,1) 95%); 
 }
@@ -124,7 +125,12 @@ body{
     }
 
     .grid {
-        width: 385px;
+        
+        width: 90%;
+    }
+
+    .settings {
+        width: 90%;
     }
 
     .cell, .cell-mine {
