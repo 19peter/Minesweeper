@@ -58,7 +58,7 @@ body{
 }
 
 .grid {
-    width: 405px;
+    width: 90%;
     height: 405px;
     display: flex;
     flex-direction: row;
@@ -124,16 +124,16 @@ body{
         border: none;
     }
 
-    .grid {
-        
+    .grid { 
         width: 90%;
+        padding: 12px 0 12px 12px;
     }
 
     .settings {
-        width: 90%;
+        width: 70%;
     }
 
     .cell, .cell-mine {
-        width: 40.7px;
+        width: 40px;
     }
 }
