@@ -29,8 +29,6 @@ document.addEventListener("DOMContentLoaded", function () {
     var bottomSide = [];
     var corner = [0];
     var hasLost = false;
-    var customSize = false;
-    var customMines = false;
 
     gridStandard.addEventListener("click", () => {
         customSize = false;
@@ -69,38 +67,38 @@ document.addEventListener("DOMContentLoaded", function () {
 
     playBtn.addEventListener("click", () => {
 
-            if (minesNumber > size * size) {
-                alert("Number of Mines is larger than number of cells");
-            } else {
-                settings.classList.add("hidden");
-                grid.style.width = 45 * size + "px";
-                grid.style.height = 45 * size + "px";
+        if (minesNumber > size * size) {
+            alert("Number of Mines is larger than number of cells");
+        } else {
+            settings.classList.add("hidden");
+            grid.style.width = 45 * size + "px";
+            grid.style.height = 45 * size + "px";
 
-                //Topside Array
-                for (j = 1; j < size - 1; j++) {
-                    topSide.push(j);
-                }
-
-                //leftSide Array
-                for (j = size; j < size * (size - 1); j += size) {
-                    leftSide.push(j);
-                }
-
-                //rightSide Array
-                for (j = (size + size - 1); j < size * (size - 1); j += size) {
-                    rightSide.push(j);
-                }
-
-                //bottomSide Array
-                for (j = size * (size - 1) + 1; j < (size * size) - 1; j++) {
-                    bottomSide.push(j);
-                }
-
-                //corner Array
-                corner.push((size - 1), (size * (size - 1)), (size * size - 1));
-
-                game();
+            //Topside Array
+            for (j = 1; j < size - 1; j++) {
+                topSide.push(j);
             }
+
+            //leftSide Array
+            for (j = size; j < size * (size - 1); j += size) {
+                leftSide.push(j);
+            }
+
+            //rightSide Array
+            for (j = (size + size - 1); j < size * (size - 1); j += size) {
+                rightSide.push(j);
+            }
+
+            //bottomSide Array
+            for (j = size * (size - 1) + 1; j < (size * size) - 1; j++) {
+                bottomSide.push(j);
+            }
+
+            //corner Array
+            corner.push((size - 1), (size * (size - 1)), (size * size - 1));
+
+            game();
+        }
     })
 
 
@@ -368,7 +366,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         hasLost = true;
         grid.style.backgroundColor = "red";
-        // alert("You Lost");
+        alert("You Lost");
     }
 
     function revealNeighbourCells(cell) {
@@ -538,22 +536,32 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     function checkWin() {
+
+        if (hasWon()) {
+            grid.style.backgroundColor = "green";
+            alert("You Win")
+        } else if (hasLost) {
+            alert("You Lost")
+        } else {
+            alert("Not Yet");
+        }
+    }
+
+    var hasWon = function checkWinLoop() {
         var counter = 0;
-        for (i = 0; i < size * size; i++) {
+        for (i = 0; i < size*size; i++) {
             if (cells[i].dataset.ismined == "true"
                 && cells[i].dataset.flagged == "true") {
                 counter++;
             }
         }
-        if (counter == minesCounter) {
-            grid.style.backgroundColor = "green";
-            alert("You Win");
-        } else if (hasLost = true) {
-            alert("You Lost");
 
+        if (counter == minesNumber) {
+            return true;
         } else {
-            alert("Not Yet");
+            return false;
         }
+        
     }
 
 

@@ -26,12 +26,13 @@ body{
 }
 
 .settings {
-    width: 400px;
+    width: 25%;
     height: fit-content;
     padding-bottom: 10px;
     background-color: rgba(17,0,203,1);
     border: rgb(27,19,112) 1px solid;
     position: absolute;
+    top: 20px;
     z-index: 1000;
     margin-top: 12%;
     border-radius: 10px;
@@ -112,6 +113,10 @@ body{
     border-radius: 20px;
 }
 
+#play {
+    width: 50%;
+}
+
 @media (max-width: 1000px) {
     .flag {
         display: block;
@@ -131,6 +136,8 @@ body{
 
     .settings {
         width: 70%;
+        position: absolute;
+        top: 100px;
     }
 
     .cell, .cell-mine {
