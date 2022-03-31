@@ -13,7 +13,7 @@ h1 {
 }
 
 body{
-    
+    height: max-content;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -101,7 +101,7 @@ body{
     line-height: 40px;
 }
 
-.check-btn, #play {
+.check-btn, #play, .stats-btn {
     width: 300px;
     height: 30px;
     margin-top: 20px;
@@ -115,6 +115,10 @@ body{
 
 #play {
     width: 50%;
+}
+
+.btn button {
+    display: block;
 }
 
 @media (max-width: 1000px) {
@@ -131,7 +135,7 @@ body{
 
     .grid { 
         width: 90%;
-        padding: 12px 0 12px 12px;
+        padding: 15px 15px 15px 15px;
     }
 
     .settings {
@@ -139,4 +143,8 @@ body{
         position: absolute;
         top: 100px;
     }
+
+    /* .cell, .cell-mine {
+        width: 40px;
+    } */
 }
