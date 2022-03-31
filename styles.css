@@ -139,8 +139,4 @@ body{
         position: absolute;
         top: 100px;
     }
-
-    .cell, .cell-mine {
-        width: 40px;
-    }
 }
