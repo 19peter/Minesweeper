@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
+
+
     var settings = document.querySelector(".settings");
     var gridStandard = document.getElementById("standard");
     var gridCustom = document.getElementById("custom");
@@ -16,9 +18,26 @@ document.addEventListener("DOMContentLoaded", function () {
     });
     var flagBtn = document.querySelector(".flag");
 
+
+    function statsUpdate(status) {
+        if (localStorage.getItem(`${status}`) == null) {
+            localStorage.setItem(`${status}`, Number(1))
+        } else {
+            let count = Number(localStorage.getItem(`${status}`));
+            localStorage.removeItem(`${status}`);
+            localStorage.setItem(`${status}`, count + 1);
+        }
+    }
+
+    var statsBtn = document.querySelector(".stats-btn");
+    statsBtn.addEventListener("click", () => {
+        alert(`Wins: ${localStorage.getItem("wins")}\nLoses: ${localStorage.getItem("loses")}`)
+    })
+
     var flag = false;
+    var flags = 0;
     var size = 9;
-    var minesNumber = 10;
+    var minesNumber = 1;
     var screenWidth = window.innerWidth;
     var id = 0;
     var minesAround = 0;
@@ -29,6 +48,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var bottomSide = [];
     var corner = [0];
     var hasLost = false;
+    var hasWon = false;
 
     gridStandard.addEventListener("click", () => {
         customSize = false;
@@ -296,40 +316,7 @@ document.addEventListener("DOMContentLoaded", function () {
             })
 
             cell.addEventListener("contextmenu", () => {
-                if (cell.dataset.flagged == "false"
-                    && cell.dataset.clicked == "false") {
-                    cell.setAttribute("data-flagged", "true");
-                    cell.innerHTML = "🚩";
-                    flags++;
-                } else if (cell.dataset.flagged == "true"
-                    && cell.dataset.clicked == "false") {
-                    cell.setAttribute("data-flagged", "false");
-                    cell.innerHTML = "";
-                    flags--;
-                }
-            })
-        } else {
-            flagBtn.addEventListener("click", () => {
-                !flag ? flag = true : flag = false;
-                flag ? flagBtn.style.backgroundColor = "red" : flagBtn.style.backgroundColor = "white";
-            })
-
-            cell.addEventListener("click", () => {
-                if (!flag) {
-                    if (cell.dataset.ismined == "false"
-                        && cell.dataset.clicked == "false"
-                        && cell.dataset.minesaround == 0) {
-                        cellRevealBasic(cell);
-                        revealNeighbourCells(cell, Number(cell.dataset.id));
-                    }
-                    else if (cell.dataset.ismined == "false"
-                        && cell.dataset.clicked == "false") {
-                        cellRevealBasic(cell);
-                    }
-                    else if (cell.dataset.ismined == "true") {
-                        mineReveal();
-                    }
-                } else {
+                if (!hasLost) {
                     if (cell.dataset.flagged == "false"
                         && cell.dataset.clicked == "false") {
                         cell.setAttribute("data-flagged", "true");
@@ -340,6 +327,45 @@ document.addEventListener("DOMContentLoaded", function () {
                         cell.setAttribute("data-flagged", "false");
                         cell.innerHTML = "";
                         flags--;
+                    }
+                }
+            })
+        } else {
+            flagBtn.addEventListener("click", () => {
+                if (!hasLost) {
+                    !flag ? flag = true : flag = false;
+                    flag ? flagBtn.style.backgroundColor = "red" : flagBtn.style.backgroundColor = "white";
+                }
+            })
+
+            cell.addEventListener("click", () => {
+                if (!hasLost) {
+                    if (!flag) {
+                        if (cell.dataset.ismined == "false"
+                            && cell.dataset.clicked == "false"
+                            && cell.dataset.minesaround == 0) {
+                            cellRevealBasic(cell);
+                            revealNeighbourCells(cell, Number(cell.dataset.id));
+                        }
+                        else if (cell.dataset.ismined == "false"
+                            && cell.dataset.clicked == "false") {
+                            cellRevealBasic(cell);
+                        }
+                        else if (cell.dataset.ismined == "true") {
+                            mineReveal();
+                        }
+                    } else {
+                        if (cell.dataset.flagged == "false"
+                            && cell.dataset.clicked == "false") {
+                            cell.setAttribute("data-flagged", "true");
+                            cell.innerHTML = "🚩";
+                            flags++;
+                        } else if (cell.dataset.flagged == "true"
+                            && cell.dataset.clicked == "false") {
+                            cell.setAttribute("data-flagged", "false");
+                            cell.innerHTML = "";
+                            flags--;
+                        }
                     }
                 }
 
@@ -355,18 +381,20 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function mineReveal() {
-        for (i = 0; i < size * size; i++) {
-
-            if (cells[i].dataset.ismined == "true") {
-                cells[i].setAttribute("data-clicked", "true");
-                cells[i].classList.add("cell-mine");
-                cells[i].classList.remove("cell");
-                cells[i].innerHTML = "💣";
+        if (!hasWon) {
+            for (i = 0; i < size * size; i++) {
+                if (cells[i].dataset.ismined == "true") {
+                    cells[i].setAttribute("data-clicked", "true");
+                    cells[i].classList.add("cell-mine");
+                    cells[i].classList.remove("cell");
+                    cells[i].innerHTML = "💣";
+                }
             }
+            hasLost = true;
+            statsUpdate("loses");
+            grid.style.backgroundColor = "red";
+            alert("You Lost");
         }
-        hasLost = true;
-        grid.style.backgroundColor = "red";
-        alert("You Lost");
     }
 
     function revealNeighbourCells(cell) {
@@ -538,6 +566,8 @@ document.addEventListener("DOMContentLoaded", function () {
     function checkWin() {
 
         if (hasWon()) {
+            statsUpdate("wins");
+            hasWon = true;
             grid.style.backgroundColor = "green";
             alert("You Win")
         } else if (hasLost) {
@@ -549,7 +579,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     var hasWon = function checkWinLoop() {
         var counter = 0;
-        for (i = 0; i < size*size; i++) {
+        for (i = 0; i < size * size; i++) {
             if (cells[i].dataset.ismined == "true"
                 && cells[i].dataset.flagged == "true") {
                 counter++;
@@ -561,7 +591,7 @@ document.addEventListener("DOMContentLoaded", function () {
         } else {
             return false;
         }
-        
+
     }
 
 
