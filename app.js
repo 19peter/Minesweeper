@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var flag = false;
     var flags = 0;
     var size = 9;
-    var minesNumber = 1;
+    var minesNumber = 10;
     var screenWidth = window.innerWidth;
     var id = 0;
     var minesAround = 0;
