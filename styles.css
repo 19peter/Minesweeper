@@ -73,14 +73,15 @@ body{
 }
 
 .cell {
-    width: 43px;
-    height: 43px;
+/*     width: 43px;
+    height: 43px; */
     border: 1px solid rgb(162, 172, 224);
     background: rgb(17,0,203);
     background: linear-gradient(293deg, rgba(17,0,203,1) 14%, rgba(0,2,148,1) 95%);   
     text-align: center;
     color: white;
-    line-height: 40px;
+    font-size = 12px;
+    line-height: 30px;
     cursor: auto;
 }
 
