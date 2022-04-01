@@ -146,6 +146,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     let calc = (screenWidth - 90) / size;
                     createdCell.style.width = calc + "px";
                     createdCell.style.height = calc + "px";
+                    createdCell.style.fontSize = calc * 0.2;
+                    createdCell.style.lineHeight = calc * 0.06;
                     grid.style.width = screenWidth - 70 + "px";
                     grid.style.height = screenWidth - 70 + "px";
                 }
@@ -398,7 +400,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function mineReveal() {
-        if (!hasWon) {
+        if (hasWon == false) {
             for (i = 0; i < size * size; i++) {
                 if (cells[i].dataset.ismined == "true") {
                     cells[i].setAttribute("data-clicked", "true");
@@ -408,6 +410,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             }
             hasLost = true;
+            hasWon = false;
             statsUpdate("loses");
             grid.style.backgroundColor = "red";
             alert("You Lost");
@@ -582,9 +585,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function checkWin() {
 
-        if (hasWon()) {
+        if (hasWonFunc()) {
             statsUpdate("wins");
             hasWon = true;
+            hasLost = false;
             grid.style.backgroundColor = "green";
             alert("You Win")
         } else if (hasLost) {
@@ -594,7 +598,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    var hasWon = function checkWinLoop() {
+    var hasWonFunc = function checkWinLoop() {
         var counter = 0;
         for (i = 0; i < size * size; i++) {
             if (cells[i].dataset.ismined == "true"
