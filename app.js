@@ -143,7 +143,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (screenWidth < 1000) {
                 if (size > 8) {
-                    let calc = (screenWidth - 90) / size;
+                    let calc = (screenWidth - 100) / size;
                     createdCell.style.width = calc + "px";
                     createdCell.style.height = calc + "px";
                     createdCell.style.fontSize = calc * 0.2;
