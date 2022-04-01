@@ -50,6 +50,11 @@ document.addEventListener("DOMContentLoaded", function () {
     var hasLost = false;
     var hasWon = false;
 
+    if (screenWidth < 1000) {
+        document.querySelector(".header").style.fontSize = 40 + "px";
+
+    }
+
     gridStandard.addEventListener("click", () => {
         customSize = false;
         sizeInput.classList.add("hidden");
@@ -91,8 +96,6 @@ document.addEventListener("DOMContentLoaded", function () {
             alert("Number of Mines is larger than number of cells");
         } else {
             settings.classList.add("hidden");
-            grid.style.width = 45 * size + "px";
-            grid.style.height = 45 * size + "px";
 
             //Topside Array
             for (j = 1; j < size - 1; j++) {
@@ -137,6 +140,20 @@ document.addEventListener("DOMContentLoaded", function () {
     function createCells() {
         for (i = 0; i < size * size; i++) {
             const createdCell = document.createElement("div");
+
+            if (screenWidth < 1000) {
+                if (size > 8) {
+                    let calc = (screenWidth - 90) / size;
+                    createdCell.style.width = calc + "px";
+                    createdCell.style.height = calc + "px";
+                    grid.style.width = screenWidth - 70 + "px";
+                    grid.style.height = screenWidth - 70 + "px";
+                }
+            } else {
+                grid.style.width = 46 * size + "px";
+                grid.style.height = 46 * size + "px";
+            }
+
             grid.appendChild(createdCell);
             createdCell.classList.add("cell");
         }
