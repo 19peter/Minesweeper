@@ -1,3 +1,6 @@
+import { checkCells } from "./checkCellsFunc.js";
+import { createGrid, assignCells, generateMines } from "./Grid.js";
+
 document.addEventListener("DOMContentLoaded", function () {
 
 
@@ -34,6 +37,8 @@ document.addEventListener("DOMContentLoaded", function () {
         alert(`Wins: ${localStorage.getItem("wins")}\nLoses: ${localStorage.getItem("loses")}`)
     })
 
+    var customSize = false;
+    var customMines = false;
     var flag = false;
     var flags = 0;
     var size = 9;
@@ -98,22 +103,22 @@ document.addEventListener("DOMContentLoaded", function () {
             settings.classList.add("hidden");
 
             //Topside Array
-            for (j = 1; j < size - 1; j++) {
+            for (let j = 1; j < size - 1; j++) {
                 topSide.push(j);
             }
 
             //leftSide Array
-            for (j = size; j < size * (size - 1); j += size) {
+            for (let j = size; j < size * (size - 1); j += size) {
                 leftSide.push(j);
             }
 
             //rightSide Array
-            for (j = (size + size - 1); j < size * (size - 1); j += size) {
+            for (let j = (size + size - 1); j < size * (size - 1); j += size) {
                 rightSide.push(j);
             }
 
             //bottomSide Array
-            for (j = size * (size - 1) + 1; j < (size * size) - 1; j++) {
+            for (let j = size * (size - 1) + 1; j < (size * size) - 1; j++) {
                 bottomSide.push(j);
             }
 
@@ -129,186 +134,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
     /// function contains main functions and starts the game
     function game() {
-        createCells();
-        assignCells();
-        generateMines();
-        checkCells(); // contains three checking functions
+        cells = createGrid(size, screenWidth, grid, cells);
+        assignCells(size, cells, id);
+        generateMines(minesCounter, minesNumber, size);
+        // contains three checking functions
+        checkCells(cells, size, corner, leftSide, rightSide, topSide, bottomSide, minesAround);
         clickingCellFunction();
     }
 
 
-    function createCells() {
-        for (i = 0; i < size * size; i++) {
-            const createdCell = document.createElement("div");
-
-            if (screenWidth < 1000) {
-                if (size > 8) {
-                    let calc = (screenWidth - 100) / size;
-                    createdCell.style.width = calc + "px";
-                    createdCell.style.height = calc + "px";
-                    createdCell.style.fontSize = calc * 0.2;
-                    createdCell.style.lineHeight = calc * 0.06;
-                    grid.style.width = screenWidth - 70 + "px";
-                    grid.style.height = screenWidth - 70 + "px";
-                }
-            } else {
-                grid.style.width = 46 * size + "px";
-                grid.style.height = 46 * size + "px";
-            }
-
-            grid.appendChild(createdCell);
-            createdCell.classList.add("cell");
-        }
-        cells = document.querySelectorAll(".cell");
-    }
-
-
-    /// FUNCTIONS: 
-    function assignCells() {
-        for (i = 0; i < size * size; i++) {
-            cells[i].setAttribute("data-clicked", "false");
-            cells[i].setAttribute("data-id", id);
-            cells[i].setAttribute("data-ismined", "false");
-            cells[i].setAttribute("data-flagged", "false");
-            id++;
-        }
-    }
-
-    function generateMines() {
-        if (minesCounter < minesNumber) {
-            var random = Math.floor((Math.random() * (size * size - 1)) + 1);
-
-            //FOR TESTING///
-            // for (i = 0; i < 10; i++) {
-            if (document.querySelector(`[data-id = "${random}"]`).dataset.ismined == "false") {
-                document.querySelector(`[data-id = "${random}"]`).setAttribute("data-ismined", "true");
-                minesCounter++
-            }
-            // }
-            // recursion
-            generateMines();
-        }
-    }
-
-
-    function checkCells() {
-        for (i = 0; i < size * size; i++) {
-            if (corner[0] == cells[i].dataset.id && cells[i].dataset.ismined == "false") {
-                cornerCellsCheckMinesAround(corner[0] + 1, corner[0] + size, corner[0] + size + 1, cells[i]);
-            }
-            else if (corner[1] == cells[i].dataset.id && cells[i].dataset.ismined == "false") {
-                cornerCellsCheckMinesAround(corner[1] - 1, corner[1] + size - 2, corner[1] + size - 1, cells[i]);
-            }
-            else if (corner[2] == cells[i].dataset.id && cells[i].dataset.ismined == "false") {
-                cornerCellsCheckMinesAround(corner[2] - size, corner[2] - size + 1, corner[2] + 1, cells[i]);
-            }
-            else if (corner[3] == cells[i].dataset.id && cells[i].dataset.ismined == "false") {
-                cornerCellsCheckMinesAround(corner[3] - 1, corner[3] - size, corner[3] - size - 1, cells[i]);
-            }
-            else if (leftSide.includes(i) && cells[i].dataset.ismined == "false") {
-                sideCellsCheckMinesAround(cells[i], (i - size), (i + size), (i - size + 1), (i + 1), (i + size + 1));
-            }
-            else if (rightSide.includes(i) && cells[i].dataset.ismined == "false") {
-                sideCellsCheckMinesAround(cells[i], (i - size), (i + size), (i - size - 1), (i - 1), (i + size - 1));
-            }
-            else if (topSide.includes(i) && cells[i].dataset.ismined == "false") {
-                sideCellsCheckMinesAround(cells[i], (i - 1), (i + 1), (i + size - 1), (i + size), (i + size + 1));
-            }
-            else if (bottomSide.includes(i) && cells[i].dataset.ismined == "false") {
-                sideCellsCheckMinesAround(cells[i], (i - 1), (i + 1), (i - size - 1), (i - size), (i - size + 1));
-            }
-            else if (!bottomSide.includes(i)
-                && !topSide.includes(i)
-                && !rightSide.includes(i)
-                && !leftSide.includes(i)
-                && cells[i].dataset.ismined == "false") {
-                checkRemainingCells(cells[i], size, 1, size + 1, size - 1, i);
-            } else {
-                null;
-            }
-        }
-    }
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /////////////// Functions inside checkCells() --  For assigning cell data///////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////    
-    function cornerCellsCheckMinesAround(valueOne, valueTwo, valueThree, element) {
-        minesAround = 0;
-        if (cells[valueOne].dataset.ismined == "true") {
-            minesAround++;
-        }
-        if (cells[valueTwo].dataset.ismined == "true") {
-            minesAround++;
-        }
-        if (cells[valueThree].dataset.ismined == "true") {
-            minesAround++;
-        }
-        element.setAttribute("data-minesaround", minesAround);
-
-    }
-
-
-    function sideCellsCheckMinesAround(element, valueOne, valueTwo, valueThree, valueFour, valueFive) {
-        minesAround = 0;
-        if (cells[valueOne].dataset.ismined == "true") {
-            minesAround++;
-        }
-        if (cells[valueTwo].dataset.ismined == "true") {
-            minesAround++;
-        }
-        if (cells[valueThree].dataset.ismined == "true") {
-            minesAround++;
-        }
-        if (cells[valueFour].dataset.ismined == "true") {
-            minesAround++;
-        }
-        if (cells[valueFive].dataset.ismined == "true") {
-            minesAround++;
-        } else {
-            null;
-        }
-        element.setAttribute("data-minesaround", minesAround);
-    }
-
-    function checkRemainingCells(element, valueOne, valueTwo, valueThree, valueFour, index) {
-        minesAround = 0;
-        if (cells[index + valueOne].dataset.ismined == "true") {
-            minesAround++;
-        }
-        if (cells[index + valueTwo].dataset.ismined == "true") {
-            minesAround++;
-        }
-        if (cells[index + valueThree].dataset.ismined == "true") {
-            minesAround++;
-        }
-        if (cells[index + valueFour].dataset.ismined == "true") {
-            minesAround++;
-        }
-        if (cells[index - valueOne].dataset.ismined == "true") {
-            minesAround++;
-        }
-        if (cells[index - valueTwo].dataset.ismined == "true") {
-            minesAround++;
-        }
-        if (cells[index - valueThree].dataset.ismined == "true") {
-            minesAround++;
-        }
-        if (cells[index - valueFour].dataset.ismined == "true") {
-            minesAround++;
-        }
-        element.setAttribute("data-minesaround", minesAround);
-    }
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////    
-
-
     //// Functionalities of cell clicing and cell revealing
     function clickingCellFunction() {
-        for (i = 0; i < size * size; i++) {
+        for (let i = 0; i < size * size; i++) {
             clickingCell(cells[i]);
         }
     }
@@ -401,7 +238,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function mineReveal() {
         if (hasWon == false) {
-            for (i = 0; i < size * size; i++) {
+            for (let i = 0; i < size * size; i++) {
                 if (cells[i].dataset.ismined == "true") {
                     cells[i].setAttribute("data-clicked", "true");
                     cells[i].classList.add("cell-mine");
@@ -600,7 +437,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     var hasWonFunc = function checkWinLoop() {
         var counter = 0;
-        for (i = 0; i < size * size; i++) {
+        for (let i = 0; i < size * size; i++) {
             if (cells[i].dataset.ismined == "true"
                 && cells[i].dataset.flagged == "true") {
                 counter++;
