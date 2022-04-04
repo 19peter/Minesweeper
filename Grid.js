@@ -2,7 +2,7 @@ export function createGrid(size, screenWidth, grid, cells) {
     for (let i = 0; i < size * size; i++) {
         const createdCell = document.createElement("div");
 
-        // if (screenWidth < 1000) {
+        if (screenWidth < 1000) {
             if (size > 8) {
                 //100 = 40 margin 30 padding and extra 30 for extending responsiveness
                 let calc = (screenWidth - 110) / size;
@@ -14,6 +14,10 @@ export function createGrid(size, screenWidth, grid, cells) {
                 // 70 = 40 margin and 30 padding subtracted from the inner width of screen
                 grid.style.height = screenWidth - 70 + "px";
             } else {
+                grid.style.width = 46 * size + "px";
+                grid.style.height = 46 * size + "px";
+            }
+        } else {
             grid.style.width = 46 * size + "px";
             grid.style.height = 46 * size + "px";
         }
