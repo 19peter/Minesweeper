@@ -2,24 +2,26 @@ export function createGrid(size, screenWidth, grid, cells) {
     for (let i = 0; i < size * size; i++) {
         const createdCell = document.createElement("div");
 
-        if (screenWidth < 1000) {
-            if (size > 8) {
-                //100 = 40 margin 30 padding and extra 30 for extending responsiveness
-                let calc = (screenWidth - 110) / size;
-                createdCell.style.width = calc + "px";
-                createdCell.style.height = calc + "px";
-                createdCell.style.fontSize = calc * 0.2;
-                createdCell.style.lineHeight = calc * 0.06;
-                grid.style.width = screenWidth - 70 + "px";
-                // 70 = 40 margin and 30 padding subtracted from the inner width of screen
-                grid.style.height = screenWidth - 70 + "px";
-            } else {
-                grid.style.width = 46 * size + "px";
-                grid.style.height = 46 * size + "px";
-            }
+        if (screenWidth >= 1000) {
+            createdCell.style.width = 40 + "px";
+            createdCell.style.height = 40 + "px";
+            grid.style.width = 42 * size + "px";
+            grid.style.height = 42 * size + "px";
+        } else if (screenWidth > 700 && screenWidth < 1000) {
+            createdCell.style.width = 38 + "px";
+            createdCell.style.height = 38 + "px";
+            grid.style.width = 40 * size + "px";
+            grid.style.height = 40 * size + "px";
+        } else if (screenWidth < 700 && screenWidth > 400) {
+            createdCell.style.width = 35 + "px";
+            createdCell.style.height = 35 + "px";
+            grid.style.width = 37 * size + "px";
+            grid.style.height = 37 * size + "px";
         } else {
-            grid.style.width = 46 * size + "px";
-            grid.style.height = 46 * size + "px";
+            createdCell.style.width = 30 + "px";
+            createdCell.style.height = 30 + "px";
+            grid.style.width = 32 * size + "px";
+            grid.style.height = 32 * size + "px";
         }
 
         grid.appendChild(createdCell);
